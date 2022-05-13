@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+
+
+<p>Image to use:</p>
+<img src="box.png" id="box" width="32" height="32">
+<img src="boxo.png" id="boxo" width="32" height="32">
+<img src="img_lamp.jpg" id="lamp" width="32" height="32">
+<img src="img_lampblue.jpg" id="lampblue" width="32" height="32">
+<img src="plus.png" id="plus" width="32" height="32">
+<img src="equals.png" id="equals" width="32" height="32">
+<p>Canvas:</p>
+
+
+<script>
+
+const start = document.getElementById("start");
+const quiz = document.getElementById("quiz");
+const question = document.getElementById("question");
+const qImg = document.getElementById("qImg");
+const choiceA = document.getElementById("A");
+const choiceB = document.getElementById("B");
+const choiceC = document.getElementById("C");
+const counter = document.getElementById("counter");
+const timeGauge = document.getElementById("timeGauge");
+const progress = document.getElementById("progress");
+const scoreDiv = document.getElementById("scoreContainer");
+
+// create our questions
+var a=3
+var b=5
+var c=7
+var d=9
+var e=a+b
+var f=c+d
+
+
+
+let questions = [
+    {
+        question : "What is the next step? \n "+a+"x+"+b+"x="+c+"+"+d,
+        imgSrc : "img/box.png",
+        choiceA : a+b+"x="+eval(c+d),
+        choiceB : a*b+"x="+eval(c+d),
+        choiceC : a+"x="+eval(c+d-b),
+        correct : "A"
+    },{
+        question : "What does CSS stand for?",
+        imgSrc : "img/css.png",
+        choiceA : "Wrong",
+        choiceB : "Correct",
+        choiceC : "Wrong",
+        correct : "B"
+    },{
+        question : "What does JS stand for?",
+        imgSrc : "img/js.png",
+        choiceA : "Wrong",
+        choiceB : "Wrong",
+        choiceC : "Correct",
+        correct : "C"
+    }
+];
+
+
+
+// create some variables
+
+const lastQuestion = questions.length - 1;
+let runningQuestion = 0;
+let count = 0;
+const questionTime = 10; // 10s
+const gaugeWidth = 150; // 150px
+const gaugeUnit = gaugeWidth / questionTime;
+let TIMER;
+let score = 0;
+
+// render a question
+function renderQuestion(){
+    let q = questions[runningQuestion];
+
+    question.innerHTML = "<p>"+ q.question +"</p>";
+    qImg.innerHTML = "<img src="+ q.imgSrc +">";
+    choiceA.innerHTML = q.choiceA;
+    choiceB.innerHTML = q.choiceB;
+    choiceC.innerHTML = q.choiceC;
+}
+
+start.addEventListener("click",startQuiz);
+
+// start quiz
+function startQuiz(){
+    start.style.display = "none";
+    renderQuestion();
+    quiz.style.display = "block";
+    renderProgress();
+    renderCounter();
+    TIMER = setInterval(renderCounter,1000); // 1000ms = 1s
+}
+
+// render progress
+function renderProgress(){
+    for(let qIndex = 0; qIndex <= lastQuestion; qIndex++){
+        progress.innerHTML += "<div class='prog' id="+ qIndex +"></div>";
+    }
+}
+
+// counter render
+
+function renderCounter(){
+    if(count <= questionTime){
+        counter.innerHTML = count;
+        timeGauge.style.width = count * gaugeUnit + "px";
+        count++
+    }else{
+        count = 0;
+        // change progress color to red
+        answerIsWrong();
+        if(runningQuestion < lastQuestion){
+            runningQuestion++;
+            renderQuestion();
+        }else{
+            // end the quiz and show the score
+            clearInterval(TIMER);
+            scoreRender();
+        }
+    }
+}
+
+// checkAnwer
+
+function checkAnswer(answer){
+    if( answer == questions[runningQuestion].correct){
+        // answer is correct
+        score++;
+        // change progress color to green
+        answerIsCorrect();
+    }else{
+        // answer is wrong
+        // change progress color to red
+        answerIsWrong();
+    }
+    count = 0;
+    if(runningQuestion < lastQuestion){
+        runningQuestion++;
+        renderQuestion();
+    }else{
+        // end the quiz and show the score
+        clearInterval(TIMER);
+        scoreRender();
+    }
+}
+
+// answer is correct
+function answerIsCorrect(){
+    document.getElementById(runningQuestion).style.backgroundColor = "#0f0";
+}
+
+// answer is Wrong
+function answerIsWrong(){
+    document.getElementById(runningQuestion).style.backgroundColor = "#f00";
+}
+
+// score render
+function scoreRender(){
+    scoreDiv.style.display = "block";
+
+    // calculate the amount of question percent answered by the user
+    const scorePerCent = Math.round(100 * score/questions.length);
+
+    // choose the image based on the scorePerCent
+    let img = (scorePerCent >= 80) ? "img/5.png" :
+              (scorePerCent >= 60) ? "img/4.png" :
+              (scorePerCent >= 40) ? "img/3.png" :
+              (scorePerCent >= 20) ? "img/2.png" :
+              "img/1.png";
+
+    scoreDiv.innerHTML = "<img src="+ img +">";
+    scoreDiv.innerHTML += "<p>"+ scorePerCent +"%</p>";
+}
+
+</script>
+
+
+<canvas id="myCanvas"  style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<canvas id="myCanvasp" width="32" height="320" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<canvas id="myCanvas2" width="320" height="320" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<canvas id="myCanvase" width="32" height="320" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<canvas id="myCanvas3"  style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<canvas id="myCanvasp2" width="32" height="320" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<canvas id="myCanvas4"  style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<br>
+<br>
+
+
+
+
+<button onclick="draw('repeat')">Repeat</button>
+<button onclick="draw('repeat-x', 100, 30, 200, 137)">Repeat-x</button>
+<button onclick="draw2('repeat')">Repeat-y</button>
+
+
+<script>
+var a=33
+var b=48
+var c=23
+var d=32
+var e=17
+
+(function() {
+  var canvas = document.getElementById('myCanvas'),
+      context = canvas.getContext('2d');
+
+  // Event handler to resize the canvas when the document view is changed
+  window.addEventListener('resize', resizeCanvas, false);
+
+  function resizeCanvas() {
+    canvas.width = 32*(Math.floor(a/10)+1);
+    canvas.height = 500;
+
+    // Redraw everything after resizing the window
+    drawStuff();
+  }
+  resizeCanvas();
+
+  function drawStuff() {
+    // Do drawing here
+    context.strokeRect(10,10, 230,100);
+    context.font = '16px serif';
+    context.fillText('The canvas is the blue', 30, 30);
+    context.fillText('background color seen here.', 30, 50);
+    context.fillText('It will resize if the window', 30, 70);
+    context.fillText('size is adjusted.', 30, 90);
+  }
+})();
+
+function drawp(direction) {
+  var q = document.getElementById("myCanvasp");
+  var ctx = q.getContext("2d");
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("plus")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(0, 120, 32, 32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+
+
+}
+
+function drawp2(direction) {
+  var q = document.getElementById("myCanvasp2");
+  var ctx = q.getContext("2d");
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("plus")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(0, 120, 32, 32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+
+
+}
+
+function drawe(direction) {
+  var q = document.getElementById("myCanvase");
+  var ctx = q.getContext("2d");
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("equals")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(0, 120, 32, 32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+}
+function draw(direction) {
+  var q = document.getElementById("myCanvas");
+  var ctx = q.getContext("2d");
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("box")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(0, 0, Math.floor(a/10)*32, 10*32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+}
+
+
+
+function draw2(direction) {
+  var q = document.getElementById("myCanvas");
+  var ctx = q.getContext("2d");
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("box")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(Math.floor(a/10)*32+32, 0, 1*32, (a-Math.floor(a/10)*10)*32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+
+}
+
+function draw3(direction) {
+  var q = document.getElementById("myCanvas2");
+  var ctx = q.getContext("2d");
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("lamp")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(0, 0, 32*Math.floor(b/10), 10*32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+}
+
+function draw4(direction) {
+  var q = document.getElementById("myCanvas2");
+  var ctx = q.getContext("2d");
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("boxo")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(Math.floor(b/10)*32+32*1, 0, 1*32, (b-Math.floor(b/10)*10)*32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+}
+
+function draw5(direction) {
+  var q = document.getElementById("myCanvas3");
+  var ctx = q.getContext("2d");
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("lamp")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(0, 0, 32*Math.floor(c/10), 10*32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+}
+
+
+
+function draw6(direction) {
+  var q = document.getElementById("myCanvas3");
+  var ctx = q.getContext("2d");
+
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("lamp")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(Math.floor(c/10)*32+32, 0, 1*32, (c-Math.floor(c/10)*10)*32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+
+}
+
+function draw7(direction) {
+  var q = document.getElementById("myCanvas4");
+  var ctx = q.getContext("2d");
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("lampblue")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(0, 0, 32*Math.floor(d/10), 10*32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+}
+
+function draw8(direction) {
+  var q = document.getElementById("myCanvas4");
+  var ctx = q.getContext("2d");
+  ctx.clearRect(0, 0, c.width, c.height);
+  var img = document.getElementById("lampblue")
+  var pat = ctx.createPattern(img, direction);
+  ctx.rect(Math.floor(d/10)*32+32, 0, 1*32, (d-Math.floor(d/10)*10)*32);
+  ctx.fillStyle = pat;
+  ctx.fill();
+
+}
+
+function resizeCanvas() {
+    myCanvas.width = 32*(Math.floor(a/10)+2);
+    myCanvas.height = 320;
+}
+
+function resizeCanvas2() {
+    myCanvas2.width = 32*(Math.floor(b/10)+2);
+    myCanvas2.height = 320;
+}
+
+function resizeCanvas3() {
+    myCanvas3.width = 32*(Math.floor(c/10)+2);
+    myCanvas3.height = 320;
+}
+
+function resizeCanvas4() {
+    myCanvas4.width = Math.floor(d/10+2)*32;
+    myCanvas4.height = 320;
+}
+</script>
+
+<script>
+
+
+
+
+    resizeCanvas();
+    resizeCanvas2();
+    resizeCanvas3();
+    resizeCanvas4();
+    draw('repeat');
+
+    draw2('repeat');
+
+    draw3('repeat');
+    draw4('repeat');
+    draw5('repeat');
+    draw6('repeat');
+    draw7('repeat');
+    draw8('repeat');
+    drawp('repeat');
+    drawp2('repeat');
+    drawe('repeat');
+</script>
+</body>
+</html>

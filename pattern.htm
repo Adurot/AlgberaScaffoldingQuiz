@@ -1,0 +1,38 @@
+$(function(){
+   repeat_bg();
+    $("#imgs img").click(function(){
+        var src = $(this).attr('src');
+        $("div#hidden_bg img#dummy").attr("src",src);
+        repeat_bg();
+    });
+});
+
+function repeat_bg()
+{
+    var board_width = $('#board').width();
+    var board_height = $('#board').height();
+    var bg_width = $('#dummy').width();
+    var bg_height = $('#dummy').height();
+
+
+    var count_horizontal = board_width / bg_width;
+    count_horizontal= Math.ceil(count_horizontal);
+
+    var count_vertical = board_height / bg_height;
+    count_vertical= Math.ceil(count_vertical);
+    $('div#background_hack').html("");
+    $('div#background_hack').css('width' ,board_width+bg_width);
+
+    /*
+    * repeat
+    * alert("horizontal we need: "+count_horizontal + " images to fill up");
+    * alert("vertical we need: "+count_vertical + " images to fill up");
+    * alert("totaal needed images = "+count_horizontal + " * "+ count_vertical + "= "+count_horizontal * count_vertical);
+    */
+
+    for (var i=0;i<count_horizontal * count_vertical;i++)
+    {
+       var clone = $('#dummy').clone();
+        $('div#background_hack').append(clone);
+    }
+}
